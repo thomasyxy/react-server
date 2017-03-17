@@ -5,9 +5,11 @@ const router = require('koa-router')();
 module.exports = function(app) {
 
   router.get('/', function *(next) {
-    this.body = 'hello world';
+    this.render('index',{
+      title: '逸轩的博客'
+    })
 
-    yield next;
+    yield next
   });
 
   return router.middleware();
