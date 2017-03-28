@@ -25,10 +25,11 @@ class App extends React.Component {
 			curKey
 		} = this.state;
 		const list = [
-			"liebiao1",
-			"liebiao2",
-			"liebiao3",
-			"liebiao4",
+			"item1",
+			"item2",
+			"item3",
+			"item4",
+			"item5",
 		];
     return <div className="app-page">
 			<ul>

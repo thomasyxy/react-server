@@ -27,7 +27,6 @@ const jade = new Jade({
   app: app
 });
 
-
 //路由
 app.use(convert(routes()));
 
@@ -40,24 +39,28 @@ app.use(convert(function*(next) {
   })
 }));
 
-function toBuild() {
-  let spinner = ora('building for production...')
-  spinner.start()
+const compiler = webpack(webpackConfig)
 
-  webpack(webpackConfig, function (err, stats) {
-    spinner.stop()
-    if (err) throw err
-    process.stdout.write(stats.toString({
-      colors: true,
-      modules: false,
-      children: false,
-      chunks: false,
-      chunkModules: false
-    }) + '\n')
+const devMiddleware = require('webpack-dev-middleware')(compiler, {
+  publicPath: webpackConfig.output.publicPath,
+  stats: {
+    colors: true,
+    chunks: false
+  }
+})
+
+const hotMiddleware = require('webpack-hot-middleware')(compiler)
+// force page reload when html-webpack-plugin template changes
+compiler.plugin('compilation', function (compilation) {
+  compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
+    hotMiddleware.publish({ action: 'reload' })
+    cb()
   })
-};
+})
 
-toBuild();
+app.use(convert(devMiddleware))
+
+app.use(convert(hotMiddleware))
 
 app.listen(port, (err) => {
 	if(err){
