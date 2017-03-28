@@ -32,4 +32,3 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin()
   ]
 }
-console.log(123)
