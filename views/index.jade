@@ -16,4 +16,5 @@ html
     div#container
       - if(react)
         | !{react}
-    //- script(src="/js/index.js")
+      - else
+        script(src="/js/index.js")

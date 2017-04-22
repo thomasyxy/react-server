@@ -4,7 +4,7 @@
   "description": "react server render",
   "private": true,
   "scripts": {
-    "start": "node app.js",
+    "start": "babel-node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
