@@ -27,13 +27,5 @@ module.exports = function(app) {
     yield next
   })
 
-  router.get('/', function *(next) {
-    this.render('index',{
-      title: 'hello'
-    })
-
-    yield next
-  });
-
   return router.middleware();
 };
