@@ -48,7 +48,7 @@ function webpackBuild() {
   })
   const devMiddleware = require("koa-webpack-dev-middleware")(compiler, {
     publicPath: webpackConfig.output.publicPath,
-    static: {
+    stats: {
       colors: true,
       chunks: false
     }
