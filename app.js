@@ -3,11 +3,12 @@ const koa = require('koa')
 const convert = require('koa-convert')
 const app = new koa()
 const Jade = require('koa-jade')
-const staticCache = require('koa-static-cache');
-const webpack = require('webpack');
-const ora = require('ora')
+const staticCache = require('koa-static-cache')
+const webpack = require('webpack')
 const routes = require('./config/routes')
 const webpackConfig = require('./webpack.config')
+const webpackDevMiddleware = require("koa-webpack-dev-middleware")
+const webpackHotMiddleware = require('koa-webpack-hot-middleware')
 
 const port = 5000
 
@@ -39,14 +40,9 @@ app.use(convert(function*(next) {
   })
 }))
 
-const spinner = ora('building...')
-spinner.start()
-
 function webpackBuild() {
-  const compiler = webpack(webpackConfig, () => {
-    spinner.stop()
-  })
-  const devMiddleware = require("koa-webpack-dev-middleware")(compiler, {
+  const compiler = webpack(webpackConfig)
+  const devMiddleware = webpackDevMiddleware(webpack(webpackConfig), {
     publicPath: webpackConfig.output.publicPath,
     stats: {
       colors: true,
@@ -54,7 +50,7 @@ function webpackBuild() {
     }
   })
 
-  const hotMiddleware = require('koa-webpack-hot-middleware')(compiler)
+  const hotMiddleware = webpackHotMiddleware(compiler)
 
   compiler.plugin('compilation', function (compilation) {
     compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
