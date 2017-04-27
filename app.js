@@ -42,7 +42,7 @@ app.use(convert(function*(next) {
 
 function webpackBuild() {
   const compiler = webpack(webpackConfig)
-  const devMiddleware = webpackDevMiddleware(webpack(webpackConfig), {
+  const devMiddleware = webpackDevMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath,
     stats: {
       colors: true,
