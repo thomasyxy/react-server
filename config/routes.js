@@ -15,12 +15,12 @@ module.exports = function(app) {
     yield next
   });
 
-  router.get('/react', function *(next) {
+  router.get('/server', function *(next) {
     let Component = React.createFactory(App)
 
     console.log(Component)
 
-    this.render('index', {
+    this.render('client', {
       react: ReactDOM.renderToString(Component({name: "John"}))
     })
 
